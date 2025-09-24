@@ -5,4 +5,12 @@ def show_inventory(game_state):
   else:
     print('Инвентарь пуст!')  
 
+def get_input(prompt="> "):
+  try:
+     pass
+      # тут ваш код
+  except (KeyboardInterrupt, EOFError):
+    print("\nВыход из игры.")
+    return "quit"
+
 

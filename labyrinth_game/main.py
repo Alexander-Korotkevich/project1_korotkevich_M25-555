@@ -15,7 +15,7 @@ def main():
   labyrinth_game.utils.describe_current_room(game_state)
 
   while(not game_state['game_over']):
-     prompt = input()
+     prompt = input('Введите команду:')
      labyrinth_game.player_actions.get_input(prompt)
 
 if __name__ == "__main__":

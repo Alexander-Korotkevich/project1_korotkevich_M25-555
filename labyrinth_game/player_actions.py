@@ -37,3 +37,23 @@ def take_item(game_state, item_name):
   else:
     print("Такого предмета здесь нет.")
 
+def use_item(game_state, item_name):
+  items = game_state['player_inventory']
+
+  if item_name in items:
+    match item_name:
+      case 'torch':
+        print("Пламя факела вспыхивает, отбрасывая танцующие тени на стены лабиринта.")
+      case 'sword':
+        print("Вес меча в руке придает вам уверенности. Теперь вы готовы к встрече с опасностью.")
+      case 'bronze_box':
+        if 'rusty_key' in items:
+          print("Вы открываете шкатулку, но она пуста. Похоже, вы уже забрали ключ.")
+        else:
+          items.append('rusty_key')
+          print("Вы открываете бронзовую шкатулку. Внутри лежит ржавый ключ!")
+          print("Ржавый ключ добавлен в инвентарь.")  
+      case _:
+        print(f'Вы не знаете как использовать {item_name}')  
+  else:
+    print('У вас нет такого предмета.')

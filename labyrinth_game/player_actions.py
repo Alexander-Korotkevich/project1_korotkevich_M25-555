@@ -1,4 +1,4 @@
-from labyrinth_game.utils import describe_current_room
+from labyrinth_game.utils import describe_current_room, get_room_data
 from labyrinth_game.constants import ROOMS
 
 
@@ -26,8 +26,7 @@ def move_player(game_state, direction):
     print("Нельзя пойти в этом направлении.")  
 
 def take_item(game_state, item_name):
-  current_room = game_state['current_room']
-  room_data = ROOMS[current_room]
+  [current_room, room_data] = get_room_data(game_state)
   items = room_data['items']
 
   if item_name in items:

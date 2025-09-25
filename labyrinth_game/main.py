@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import labyrinth_game.constants
-import labyrinth_game.utils
-import labyrinth_game.player_actions
+import labyrinth_game.utils as utils
+import labyrinth_game.player_actions as actions
   
 game_state = {
   'player_inventory': [], # Инвентарь игрока
@@ -15,15 +15,16 @@ def process_command(game_state, command):
 
    match command:
       case 'look':
-         labyrinth_game.utils.describe_current_room(game_state)
+         utils.describe_current_room(game_state)
       case 'use':
+         actions.use_item(game_state, payload)
          pass
       case 'go':
-         labyrinth_game.player_actions.move_player(game_state, payload)   
+         actions.move_player(game_state, payload)   
       case 'take':
-         labyrinth_game.player_actions.take_item(game_state, payload)
+         actions.take_item(game_state, payload)
       case 'inventory':
-         labyrinth_game.player_actions.show_inventory(game_state)   
+         actions.show_inventory(game_state)   
       case 'quit' | 'exit':
          game_state['game_over'] = True
       case _:
@@ -31,10 +32,10 @@ def process_command(game_state, command):
 
 def main():
   print("Добро пожаловать в Лабиринт сокровищ!")
-  labyrinth_game.utils.describe_current_room(game_state)
+  utils.describe_current_room(game_state)
 
   while not game_state['game_over']:
-     input = labyrinth_game.player_actions.get_input()
+     input = actions.get_input()
      process_command(game_state, input)
 
 

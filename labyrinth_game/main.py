@@ -11,10 +11,17 @@ game_state = {
 }
 
 def process_command(game_state, command):
-   [command, payload] = command.split()
+   splitted = command.split()
+   _command = splitted[0]
+   payload = None
    is_treasure_room = game_state["current_room"] == "treasure_room"
 
-   match command:
+   if len(splitted) > 1:
+     payload = splitted[1]
+
+   match _command:
+      case 'help':
+        utils.show_help()
       case 'look':
         utils.describe_current_room(game_state)
       case 'use':
@@ -35,6 +42,7 @@ def process_command(game_state, command):
           utils.solve_puzzle(game_state)    
       case 'quit' | 'exit':
         game_state['game_over'] = True
+        print('Игра окончена! До новых встреч')
       case _:
         print("Неизвестная команда.")
 

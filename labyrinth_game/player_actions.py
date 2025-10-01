@@ -1,6 +1,4 @@
-from labyrinth_game.utils import describe_current_room, get_room_data
-from labyrinth_game.constants import ROOMS
-
+import labyrinth_game.utils as utils
 
 def show_inventory(game_state):
   inventory = game_state['player_inventory']
@@ -17,16 +15,17 @@ def get_input(prompt="> "):
     return "quit"
 
 def move_player(game_state, direction):
-  exit = game_state['exits'].get(direction)
+  [current_room, room_data] = utils.get_room_data(game_state)
+  exit = room_data['exits'].get(direction)
   if exit:
     game_state['current_room'] = exit
     game_state['steps_taken'] += 1
-    describe_current_room(game_state)
+    utils.describe_current_room(game_state)
   else:
     print("Нельзя пойти в этом направлении.")  
 
 def take_item(game_state, item_name):
-  [current_room, room_data] = get_room_data(game_state)
+  [current_room, room_data] = utils.get_room_data(game_state)
   items = room_data['items']
 
   if item_name in items:

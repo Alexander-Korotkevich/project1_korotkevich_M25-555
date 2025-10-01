@@ -12,23 +12,31 @@ game_state = {
 
 def process_command(game_state, command):
    [command, payload] = command.split()
+   is_treasure_room = game_state["current_room"] == "treasure_room"
 
    match command:
       case 'look':
-         utils.describe_current_room(game_state)
+        utils.describe_current_room(game_state)
       case 'use':
-         actions.use_item(game_state, payload)
-         pass
+        if is_treasure_room and payload == 'treasure_chest':
+          utils.attempt_open_treasure(game_state)
+        else:  
+          actions.use_item(game_state, payload)
       case 'go':
-         actions.move_player(game_state, payload)   
+        actions.move_player(game_state, payload)   
       case 'take':
-         actions.take_item(game_state, payload)
+        actions.take_item(game_state, payload)
       case 'inventory':
-         actions.show_inventory(game_state)   
+        actions.show_inventory(game_state)   
+      case 'solve':
+        if is_treasure_room:
+          utils.attempt_open_treasure(game_state)
+        else:
+          utils.solve_puzzle(game_state)    
       case 'quit' | 'exit':
-         game_state['game_over'] = True
+        game_state['game_over'] = True
       case _:
-         print("Неизвестная команда.")      
+        print("Неизвестная команда.")
 
 def main():
   print("Добро пожаловать в Лабиринт сокровищ!")

@@ -1,4 +1,8 @@
-ROOMS = {
+
+
+from labyrinth_game.types import RoomData
+
+ROOMS: dict[str, RoomData] = {
     'entrance': {
         'description': 'Вы в темном входе лабиринта...',
         'exits': {'north': 'hall', 'east': 'trap_room'},

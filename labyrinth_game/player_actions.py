@@ -1,6 +1,7 @@
 import labyrinth_game.utils as utils
+from labyrinth_game.types import GameStateType
 
-def show_inventory(game_state):
+def show_inventory(game_state: GameStateType):
   inventory = game_state['player_inventory']
   if inventory:
     print(f'Инвентарь: {', '.join(inventory)}')
@@ -14,8 +15,8 @@ def get_input(prompt="> "):
     print("\nВыход из игры.")
     return "quit"
 
-def move_player(game_state, direction):
-  [current_room, room_data] = utils.get_room_data(game_state)
+def move_player(game_state: GameStateType, direction: str):
+  [room_data] = utils.get_room_data(game_state)
   exit = room_data['exits'].get(direction)
   if exit:
     game_state['current_room'] = exit
@@ -24,8 +25,8 @@ def move_player(game_state, direction):
   else:
     print("Нельзя пойти в этом направлении.")  
 
-def take_item(game_state, item_name):
-  [current_room, room_data] = utils.get_room_data(game_state)
+def take_item(game_state: GameStateType, item_name: str):
+  [room_data] = utils.get_room_data(game_state)
   items = room_data['items']
 
   if item_name in items:
@@ -35,7 +36,7 @@ def take_item(game_state, item_name):
   else:
     print("Такого предмета здесь нет.")
 
-def use_item(game_state, item_name):
+def use_item(game_state: GameStateType, item_name: str):
   items = game_state['player_inventory']
 
   if item_name in items:

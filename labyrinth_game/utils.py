@@ -1,19 +1,21 @@
+from typing import Union
 from labyrinth_game.constants import ROOMS
 from labyrinth_game.player_actions import get_input
+from labyrinth_game.types import GameStateType, RoomData
 
-def get_room_data(game_state):
-  """Возвращает название текущей комнаты и ее данные"""
+def get_room_data(game_state: GameStateType) -> list[Union[RoomData, str]]:
+  """Возвращает данные комнаты и ее название"""
 
   current_room = game_state['current_room'];
   room_data = ROOMS.get(current_room)
 
-  return [current_room, room_data]
+  return [room_data, current_room]
 
-def describe_current_room(game_state):
+def describe_current_room(game_state: GameStateType):
   """Описать текущую комнату"""
 
+  [room_data, current_room] = get_room_data(game_state)
   separator = ', '
-  [current_room, room_data] = get_room_data(game_state)
 
   print(f'== {current_room.upper()} ==')
 
@@ -27,10 +29,10 @@ def describe_current_room(game_state):
   if room_data['puzzle']:
     print("Кажется, здесь есть загадка (используйте команду solve).")
 
-def solve_puzzle(game_state):
+def solve_puzzle(game_state: GameStateType):
   """Попытаться решить загадку"""
 
-  [current_room, room_data] = get_room_data(game_state)
+  [room_data, current_room] = get_room_data(game_state)
   puzzle = room_data['puzzle']
 
   if not puzzle:
@@ -52,10 +54,10 @@ def solve_puzzle(game_state):
   else:
     print("Неверно. Попробуйте снова.")
 
-def attempt_open_treasure(game_state):
+def attempt_open_treasure(game_state: GameStateType):
   """Попытаться открыть сундук с сокровищами"""
 
-  [current_room, room_data] = get_room_data(game_state)
+  [room_data] = get_room_data(game_state)
   items = room_data['items']
 
   # Проверяем есть ли сундук в комнате

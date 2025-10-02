@@ -20,6 +20,8 @@ ITEMS_COIN = "coin"
 ITEMS_RUSTY_KEY = "rusty_key"
 ITEMS_TREASURE_KEY = "treasure_key"
 
+KEYS = [ITEMS_RUSTY_KEY, ITEMS_TREASURE_KEY]
+
 ROOMS: dict[str, RoomData] = {
     "entrance": {
         "description": "Вы в темном входе лабиринта...",

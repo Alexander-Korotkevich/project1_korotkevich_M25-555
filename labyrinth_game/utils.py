@@ -93,10 +93,7 @@ def attempt_open_treasure(game_state: GameStateType):
         return
 
     # Если есть нужный ключ, открываем сундук и завершаем игру
-    if any(
-        key in game_state.get("player_inventory")
-        for key in [const.ITEMS_TREASURE_KEY, const.ITEMS_RUSTY_KEY]
-    ):
+    if any(key in game_state.get("player_inventory") for key in const.KEYS):
         print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
         win_game(game_state, room_data)
     else:
@@ -228,3 +225,20 @@ def random_event(game_state: GameStateType):
 
         if handler:
             handler(game_state)
+
+
+def check_room(game_state: GameStateType, next_room: str) -> bool:
+    """Проверяет является ли следующая комната Сокровищницей"""
+
+    if next_room != const.TREASURE_ROOM:
+        return True
+
+    inventory = game_state.get("player_inventory")
+    have_key = any(key in inventory for key in const.KEYS)
+
+    if have_key:
+        print("Вы используете найденный ключ, чтобы открыть путь в комнату сокровищ.")
+        return True
+    else:
+        print("Дверь заперта. Нужен ключ, чтобы пройти дальше.")
+        return False

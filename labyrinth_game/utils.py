@@ -1,29 +1,7 @@
 import math
 from typing import Union
 
-from labyrinth_game.constants import (
-    CMD_GO,
-    CMD_HELP,
-    CMD_INVENTORY,
-    CMD_LOOK,
-    CMD_QUIT,
-    CMD_SOLVE,
-    CMD_TAKE,
-    CMD_USE,
-    DAMAGE_LIMIT,
-    EVENT_HAPPENED,
-    EVENTS,
-    ITEMS_COIN,
-    ITEMS_SWORD,
-    ITEMS_TORCH,
-    ROOMS,
-    ITEMS_RUSTY_KEY,
-    SALT_NUMBER_1,
-    SALT_NUMBER_2,
-    TRAP_ROOM,
-    TREASURE_CHEST,
-    ITEMS_TREASURE_KEY,
-)
+import labyrinth_game.constants as const
 from labyrinth_game.player_actions import get_input
 from labyrinth_game.types import GameStateType, RoomData
 
@@ -38,7 +16,7 @@ def get_room_data(game_state: GameStateType) -> list[Union[RoomData, str]]:
     """Возвращает данные комнаты и ее название"""
 
     current_room = game_state.get("current_room")
-    room_data = ROOMS.get(current_room)
+    room_data = const.ROOMS.get(current_room)
 
     return [room_data, current_room]
 
@@ -89,7 +67,7 @@ def solve_puzzle(game_state: GameStateType):
 
     if input == answer:
         print("Правильно! Даже древние хранители были бы впечатлены.")
-        ROOMS[current_room]["puzzle"] = None
+        const.ROOMS[current_room]["puzzle"] = None
         # TODO: добавить награду
     else:
         print("Неверно. Попробуйте снова.")
@@ -98,7 +76,7 @@ def solve_puzzle(game_state: GameStateType):
 def win_game(game_state: GameStateType, room_data: RoomData):
     """Заканчивает игру при победе"""
 
-    room_data["items"].remove(TREASURE_CHEST)
+    room_data["items"].remove(const.TREASURE_CHEST)
     game_over(game_state)
     print("В сундуке сокровище! Вы победили!")
 
@@ -110,14 +88,14 @@ def attempt_open_treasure(game_state: GameStateType):
     items = room_data.get("items")
 
     # Проверяем есть ли сундук в комнате
-    if TREASURE_CHEST not in items:
+    if const.TREASURE_CHEST not in items:
         print("Сундук уже открыт или отсутствует.")
         return
 
     # Если есть нужный ключ, открываем сундук и завершаем игру
     if any(
         key in game_state.get("player_inventory")
-        for key in [ITEMS_TREASURE_KEY, ITEMS_RUSTY_KEY]
+        for key in [const.ITEMS_TREASURE_KEY, const.ITEMS_RUSTY_KEY]
     ):
         print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
         win_game(game_state, room_data)
@@ -143,21 +121,26 @@ def attempt_open_treasure(game_state: GameStateType):
 
 def show_help():
     print("\nДоступные команды:")
-    print(f"  {CMD_GO} <direction>  - перейти в направлении (north/south/east/west)")
-    print(f"  {CMD_LOOK}            - осмотреть текущую комнату")
-    print(f"  {CMD_TAKE} <item>     - поднять предмет")
-    print(f"  {CMD_USE} <item>      - использовать предмет из инвентаря")
-    print(f"  {CMD_INVENTORY}       - показать инвентарь")
-    print(f"  {CMD_SOLVE}           - попытаться решить загадку в комнате")
-    print(f"  {CMD_QUIT}            - выйти из игры")
-    print(f"  {CMD_HELP}            - показать это сообщение")
+    print(
+        (
+            f"  {const.CMD_GO} <direction>  - перейти в направлении"
+            " (north/south/east/west)"
+        )
+    )
+    print(f"  {const.CMD_LOOK}            - осмотреть текущую комнату")
+    print(f"  {const.CMD_TAKE} <item>     - поднять предмет")
+    print(f"  {const.CMD_USE} <item>      - использовать предмет из инвентаря")
+    print(f"  {const.CMD_INVENTORY}       - показать инвентарь")
+    print(f"  {const.CMD_SOLVE}           - попытаться решить загадку в комнате")
+    print(f"  {const.CMD_QUIT}            - выйти из игры")
+    print(f"  {const.CMD_HELP}            - показать это сообщение")
 
 
 def pseudo_random(seed: int, modulo: int) -> int:
     """Возвращает псевдослучайное целое число в диапазоне [0, modulo]"""
 
-    salted_seed_sin = math.sin(seed * SALT_NUMBER_1)
-    salted_seed_sin *= SALT_NUMBER_2
+    salted_seed_sin = math.sin(seed * const.SALT_NUMBER_1)
+    salted_seed_sin *= const.SALT_NUMBER_2
 
     fract = salted_seed_sin - math.floor(salted_seed_sin)
 
@@ -183,7 +166,7 @@ def trigger_trap(game_state: GameStateType):
         end = 9
         random_int = pseudo_random(start, end)
 
-        if random_int < DAMAGE_LIMIT:
+        if random_int < const.DAMAGE_LIMIT:
             game_over(game_state)
             print(
                 (
@@ -199,7 +182,7 @@ def find_event(game_state: GameStateType):
     """Событие Находка"""
 
     [room_data] = get_room_data(game_state)
-    room_data["items"].append(ITEMS_COIN)
+    room_data["items"].append(const.ITEMS_COIN)
     print("Вы заметили монетку, сверкающую на полу.")
 
 
@@ -210,7 +193,7 @@ def fear_event(game_state: GameStateType):
 
     print("Тишину нарушает едва слышный шорох. Кажется, вы не одни.")
 
-    if ITEMS_SWORD in items:
+    if const.ITEMS_SWORD in items:
         print(
             (
                 "Шорох обрывается на полуслове."
@@ -225,7 +208,7 @@ def trap_event(game_state: GameStateType):
     current_room = game_state.get("current_room")
     items = game_state.get("player_inventory")
 
-    if current_room == TRAP_ROOM and ITEMS_TORCH not in items:
+    if current_room == const.TRAP_ROOM and const.ITEMS_TORCH not in items:
         print("Чувство опасности охватывает вас! Будьте готовы ко всему.")
 
         trigger_trap(game_state)
@@ -238,9 +221,9 @@ def random_event(game_state: GameStateType):
     end = 10
     random_int = pseudo_random(start, end)
 
-    if random_int == EVENT_HAPPENED:
-        event_code = pseudo_random(start, len(EVENTS))
-        event = EVENTS.get(event_code)
+    if random_int == const.EVENT_HAPPENED:
+        event_code = pseudo_random(start, len(const.EVENTS))
+        event = const.EVENTS.get(event_code)
         handler = event.get("handler")
 
         if handler:

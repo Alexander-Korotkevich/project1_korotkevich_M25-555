@@ -1,5 +1,4 @@
 import math
-from typing import Union
 
 import labyrinth_game.constants as const
 from labyrinth_game.player_actions import get_input

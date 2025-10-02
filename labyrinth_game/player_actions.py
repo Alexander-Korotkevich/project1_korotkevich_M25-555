@@ -1,8 +1,9 @@
+from labyrinth_game.constants import CMD_QUIT, RUSTY_KEY
 import labyrinth_game.utils as utils
 from labyrinth_game.types import GameStateType
 
 def show_inventory(game_state: GameStateType):
-  inventory = game_state['player_inventory']
+  inventory = game_state.get('player_inventory')
   if inventory:
     print(f'Инвентарь: {', '.join(inventory)}')
   else:
@@ -13,11 +14,11 @@ def get_input(prompt="> "):
     return input(prompt)
   except (KeyboardInterrupt, EOFError):
     print("\nВыход из игры.")
-    return "quit"
+    return CMD_QUIT
 
 def move_player(game_state: GameStateType, direction: str):
   [room_data] = utils.get_room_data(game_state)
-  exit = room_data['exits'].get(direction)
+  exit = room_data.get('exits').get(direction)
   if exit:
     game_state['current_room'] = exit
     game_state['steps_taken'] += 1
@@ -27,7 +28,7 @@ def move_player(game_state: GameStateType, direction: str):
 
 def take_item(game_state: GameStateType, item_name: str):
   [room_data] = utils.get_room_data(game_state)
-  items = room_data['items']
+  items = room_data.get('items')
 
   if item_name in items:
     game_state['player_inventory'].append(item_name)
@@ -46,10 +47,10 @@ def use_item(game_state: GameStateType, item_name: str):
       case 'sword':
         print("Вес меча в руке придает вам уверенности. Теперь вы готовы к встрече с опасностью.")
       case 'bronze_box':
-        if 'rusty_key' in items:
+        if RUSTY_KEY in items:
           print("Вы открываете шкатулку, но она пуста. Похоже, вы уже забрали ключ.")
         else:
-          items.append('rusty_key')
+          items.append(RUSTY_KEY)
           print("Вы открываете бронзовую шкатулку. Внутри лежит ржавый ключ!")
           print("Ржавый ключ добавлен в инвентарь.")  
       case _:

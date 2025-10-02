@@ -2,6 +2,16 @@
 
 from labyrinth_game.types import RoomData
 
+# Комната с сундуком
+TREASURE_ROOM = "treasure_room"
+
+# Сундук с сокровищами
+TREASURE_CHEST = 'treasure_chest'
+
+# Ключи
+RUSTY_KEY = 'rusty_key'
+TREASURE_KEY = 'treasure_key'
+
 ROOMS: dict[str, RoomData] = {
     'entrance': {
         'description': 'Вы в темном входе лабиринта...',
@@ -33,10 +43,10 @@ ROOMS: dict[str, RoomData] = {
           'items': ['sword', 'bronze box'],
           'puzzle': None
     },
-    'treasure_room': {
+    TREASURE_ROOM: {
           'description': 'Комната, на столе большой сундук. Дверь заперта — нужен особый ключ.',
           'exits': {'south': 'hall'},
-          'items': ['treasure chest'],
+          'items': [TREASURE_CHEST],
           'puzzle': ('Дверь защищена кодом. Введите код (подсказка: это число пятикратного шага, 2*5= ? )', '10')
     },
     'garden': {
@@ -52,3 +62,14 @@ ROOMS: dict[str, RoomData] = {
         'puzzle': ('На стене высечена головоломка: "Сколько углов у круга?" (ответ цифрой)', '0')
     }
 }
+
+# Основные команды игры
+CMD_HELP = 'help'
+CMD_LOOK = 'look' 
+CMD_USE = 'use'
+CMD_GO = 'go'
+CMD_TAKE = 'take'
+CMD_INVENTORY = 'inventory'
+CMD_SOLVE = 'solve'
+CMD_QUIT = 'quit'
+CMD_EXIT = 'exit'

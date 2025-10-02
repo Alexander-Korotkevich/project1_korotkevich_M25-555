@@ -1,12 +1,12 @@
 from typing import Union
-from labyrinth_game.constants import ROOMS
+from labyrinth_game.constants import CMD_GO, CMD_HELP, CMD_INVENTORY, CMD_LOOK, CMD_QUIT, CMD_SOLVE, CMD_TAKE, CMD_USE, ROOMS, RUSTY_KEY, TREASURE_CHEST, TREASURE_KEY
 from labyrinth_game.player_actions import get_input
 from labyrinth_game.types import GameStateType, RoomData
 
 def get_room_data(game_state: GameStateType) -> list[Union[RoomData, str]]:
   """Возвращает данные комнаты и ее название"""
 
-  current_room = game_state['current_room'];
+  current_room = game_state.get('current_room');
   room_data = ROOMS.get(current_room)
 
   return [room_data, current_room]
@@ -15,25 +15,27 @@ def describe_current_room(game_state: GameStateType):
   """Описать текущую комнату"""
 
   [room_data, current_room] = get_room_data(game_state)
+  room_items = room_data.get('items')
+  room_exits = room_data.get('exits')
   separator = ', '
 
   print(f'== {current_room.upper()} ==')
 
-  print(room_data['description'])
+  print(room_data.get('description'))
 
-  if room_data['items']:
-    print('Заметные предметы: ' + separator.join(room_data['items']))
+  if room_items:
+    print('Заметные предметы: ' + separator.join(room_items))
   
-  print('Выходы: ' + separator.join([f'{exit}: {room_data['exits'][exit]}' for exit in room_data['exits'].keys()]))
+  print('Выходы: ' + separator.join([f'{exit}: {room_exits.get(exit)}' for exit in room_exits.keys()]))
 
-  if room_data['puzzle']:
+  if room_data.get('puzzle'):
     print("Кажется, здесь есть загадка (используйте команду solve).")
 
 def solve_puzzle(game_state: GameStateType):
   """Попытаться решить загадку"""
 
   [room_data, current_room] = get_room_data(game_state)
-  puzzle = room_data['puzzle']
+  puzzle = room_data.get('puzzle')
 
   if not puzzle:
     print("Загадок здесь нет.")
@@ -58,17 +60,17 @@ def attempt_open_treasure(game_state: GameStateType):
   """Попытаться открыть сундук с сокровищами"""
 
   [room_data] = get_room_data(game_state)
-  items = room_data['items']
+  items = room_data.get('items')
 
   # Проверяем есть ли сундук в комнате
-  if 'treasure_chest' not in items:
+  if TREASURE_CHEST not in items:
     print("Сундук уже открыт или отсутствует.")
     return
     
   # Если есть нужный ключ, открываем сундук и завершаем игру
-  if any(key in game_state['player_inventory'] for key in ['treasure_key', 'rusty_key']):
+  if any(key in game_state.get('player_inventory') for key in [TREASURE_KEY, RUSTY_KEY]):
     print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
-    room_data['items'].remove('treasure_chest')
+    room_data['items'].remove(TREASURE_CHEST)
 
     print("В сундуке сокровище! Вы победили!")
     game_state['game_over'] = True
@@ -78,12 +80,12 @@ def attempt_open_treasure(game_state: GameStateType):
     input = get_input()
 
     if input == 'да':
-      right_code = room_data['puzzle'][1]
+      right_code = room_data.get('puzzle')[1]
       code = get_input('Введите код: ')
 
       if code == right_code:
         print("Вы вводите код, и замок щёлкает. Сундук открыт!")
-        room_data['items'].remove('treasure_chest')
+        room_data['items'].remove(TREASURE_CHEST)
 
         print("В сундуке сокровище! Вы победили!")
         game_state['game_over'] = True
@@ -96,11 +98,11 @@ def attempt_open_treasure(game_state: GameStateType):
 
 def show_help():
     print("\nДоступные команды:")
-    print("  go <direction>  - перейти в направлении (north/south/east/west)")
-    print("  look            - осмотреть текущую комнату")
-    print("  take <item>     - поднять предмет")
-    print("  use <item>      - использовать предмет из инвентаря")
-    print("  inventory       - показать инвентарь")
-    print("  solve           - попытаться решить загадку в комнате")
-    print("  quit            - выйти из игры")
-    print("  help            - показать это сообщение")
+    print(f"  {CMD_GO} <direction>  - перейти в направлении (north/south/east/west)")
+    print(f"  {CMD_LOOK}            - осмотреть текущую комнату")
+    print(f"  {CMD_TAKE} <item>     - поднять предмет")
+    print(f"  {CMD_USE} <item>      - использовать предмет из инвентаря")
+    print(f"  {CMD_INVENTORY}       - показать инвентарь")
+    print(f"  {CMD_SOLVE}           - попытаться решить загадку в комнате")
+    print(f"  {CMD_QUIT}            - выйти из игры")
+    print(f"  {CMD_HELP}            - показать это сообщение")

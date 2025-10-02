@@ -65,7 +65,7 @@ def solve_puzzle(game_state: GameStateType):
 
     input = get_input("Ваш ответ: ")
 
-    if input == answer:
+    if input == answer or input in const.PUZZLE_ANSWER:
         print("Правильно! Даже древние хранители были бы впечатлены.")
         const.ROOMS[current_room]["puzzle"] = None
         # TODO: добавить награду

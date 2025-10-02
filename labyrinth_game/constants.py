@@ -22,6 +22,8 @@ ITEMS_TREASURE_KEY = "treasure_key"
 
 KEYS = [ITEMS_RUSTY_KEY, ITEMS_TREASURE_KEY]
 
+PUZZLE_ANSWER = ('10', 'десять')
+
 ROOMS: dict[str, RoomData] = {
     "entrance": {
         "description": "Вы в темном входе лабиринта...",
@@ -40,7 +42,7 @@ ROOMS: dict[str, RoomData] = {
                 'На пьедестале надпись: "Назовите число, которое идет после девяти".'
                 " Введите ответ цифрой или словом."
             ),
-            "10",
+            PUZZLE_ANSWER,
         ),
     },
     TRAP_ROOM: {
@@ -92,7 +94,7 @@ ROOMS: dict[str, RoomData] = {
                 "Дверь защищена кодом. "
                 "Введите код (подсказка: это число пятикратного шага, 2*5= ? )"
             ),
-            "10",
+            PUZZLE_ANSWER,
         ),
     },
     "garden": {

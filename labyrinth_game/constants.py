@@ -1,4 +1,5 @@
 from typing import Dict
+
 from labyrinth_game.types import EventData, RoomData
 from labyrinth_game.utils import fear_event, find_event, trap_event
 

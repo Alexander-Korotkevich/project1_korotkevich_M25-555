@@ -135,21 +135,12 @@ def attempt_open_treasure(game_state: GameStateType):
             print("Вы отступаете от сундука.")
 
 
-def show_help():
+def show_help(commands: dict[str, str]):
+    command_width = 28
+
     print("\nДоступные команды:")
-    print(
-        (
-            f"  {const.CMD_GO} <direction>  - перейти в направлении"
-            " (north/south/east/west)"
-        )
-    )
-    print(f"  {const.CMD_LOOK}            - осмотреть текущую комнату")
-    print(f"  {const.CMD_TAKE} <item>     - поднять предмет")
-    print(f"  {const.CMD_USE} <item>      - использовать предмет из инвентаря")
-    print(f"  {const.CMD_INVENTORY}       - показать инвентарь")
-    print(f"  {const.CMD_SOLVE}           - попытаться решить загадку в комнате")
-    print(f"  {const.CMD_QUIT}            - выйти из игры")
-    print(f"  {const.CMD_HELP}            - показать это сообщение")
+    for command in commands:
+        print(f"  {command.ljust(command_width)}- {commands.get(command)}")
 
 
 def pseudo_random(seed: int, modulo: int) -> int:

@@ -151,3 +151,14 @@ EVENTS: Dict[int, EventData] = {
     1: {"event": "fear", "handler": fear_event},
     2: {"event": "trap", "handler": trap_event},
 }
+
+COMMANDS = {
+    f"{CMD_GO} <direction>": "перейти в направлении  (north/south/east/west)",
+    f"{CMD_LOOK}": "осмотреть текущую комнату",
+    f"{CMD_TAKE} <item>": "поднять предмет",
+    f"{CMD_USE} <item>": "использовать предмет из инвентаря",
+    f"{CMD_INVENTORY}": "показать инвентарь",
+    f"{CMD_SOLVE}": "попытаться решить загадку в комнате",
+    f"{CMD_QUIT}": "выйти из игры",
+    f"{CMD_HELP}": "показать это сообщение",
+}

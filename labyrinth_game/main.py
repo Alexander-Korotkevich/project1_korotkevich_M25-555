@@ -23,7 +23,7 @@ def process_command(game_state: GameStateType, command: str):
 
     match _command:
         case const.CMD_HELP:
-            utils.show_help()
+            utils.show_help(const.COMMANDS)
         case const.CMD_LOOK:
             utils.describe_current_room(game_state)
         case const.CMD_USE:

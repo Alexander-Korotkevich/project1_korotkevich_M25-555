@@ -1,4 +1,4 @@
-from typing import Dict, List, TypedDict, Union
+from typing import Callable, Dict, List, TypedDict, Union
 
 
 class GameStateType(TypedDict):
@@ -13,3 +13,7 @@ class RoomData(TypedDict):
     exits: Dict[str, str]
     items: List[str]
     puzzle: Union[tuple, None]
+
+class EventData(TypedDict):
+    event: str
+    handler: Callable[[GameStateType], None]

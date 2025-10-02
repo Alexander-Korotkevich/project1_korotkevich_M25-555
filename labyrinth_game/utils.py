@@ -11,6 +11,8 @@ from labyrinth_game.constants import (
     CMD_TAKE,
     CMD_USE,
     DAMAGE_LIMIT,
+    EVENT_HAPPENED,
+    EVENTS,
     ROOMS,
     RUSTY_KEY,
     SALT_NUMBER_1,
@@ -186,3 +188,55 @@ def trigger_trap(game_state: GameStateType):
             )
         else:
             print("Похоже, у ловушки был выходной. Вам повезло!")
+
+
+def find_event(game_state: GameStateType):
+    """Событие Находка"""
+
+    [room_data] = get_room_data(game_state)
+    room_data["items"].append("coin")
+    print("Вы заметили монетку, сверкающую на полу.")
+
+
+def fear_event(game_state: GameStateType):
+    """Событие Испуг"""
+
+    items = game_state.get("player_inventory")
+
+    print("Тишину нарушает едва слышный шорох. Кажется, вы не одни.")
+
+    if "sword" in items:
+        print(
+            (
+                "Шорох обрывается на полуслове."
+                " Присутствие отступает перед холодной сталью."
+            )
+        )
+
+
+def trap_event(game_state: GameStateType):
+    """Событие Срабатывание ловушки"""
+
+    current_room = game_state.get("current_room")
+    items = game_state.get("player_inventory")
+
+    if current_room == "trap_room" and "torch" not in items:
+        print("Чувство опасности охватывает вас! Будьте готовы ко всему.")
+
+        trigger_trap(game_state)
+
+
+def random_event(game_state: GameStateType):
+    """Запускает случайное событие"""
+
+    start = 0
+    end = 10
+    random_int = pseudo_random(start, end)
+
+    if random_int == EVENT_HAPPENED:
+        event_code = pseudo_random(start, len(EVENTS))
+        event = EVENTS.get(event_code)
+        handler = event.get("handler")
+
+        if handler:
+            handler(game_state)

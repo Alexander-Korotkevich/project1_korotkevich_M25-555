@@ -1,4 +1,6 @@
-from labyrinth_game.types import RoomData
+from typing import Dict
+from labyrinth_game.types import EventData, RoomData
+from labyrinth_game.utils import fear_event, find_event, trap_event
 
 # Комната с сундуком
 TREASURE_ROOM = "treasure_room"
@@ -127,3 +129,11 @@ SALT_NUMBER_1 = 12.9898
 SALT_NUMBER_2 = 43758.5453
 
 DAMAGE_LIMIT = 3
+
+EVENT_HAPPENED = 0
+
+EVENTS: Dict[int, EventData] = {
+    0: {"event": "find", "handler": find_event},
+    1: {"event": "fear", "handler": fear_event},
+    2: {"event": "trap", "handler": trap_event},
+}

@@ -26,6 +26,7 @@ def move_player(game_state: GameStateType, direction: str):
         game_state["current_room"] = exit
         game_state["steps_taken"] += 1
         utils.describe_current_room(game_state)
+        utils.random_event()
     else:
         print("Нельзя пойти в этом направлении.")
 

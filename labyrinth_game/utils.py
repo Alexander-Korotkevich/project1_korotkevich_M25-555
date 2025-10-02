@@ -1,3 +1,4 @@
+import math
 from typing import Union
 
 from labyrinth_game.constants import (
@@ -11,6 +12,8 @@ from labyrinth_game.constants import (
     CMD_USE,
     ROOMS,
     RUSTY_KEY,
+    SALT_NUMBER_1,
+    SALT_NUMBER_2,
     TREASURE_CHEST,
     TREASURE_KEY,
 )
@@ -132,3 +135,14 @@ def show_help():
     print(f"  {CMD_SOLVE}           - попытаться решить загадку в комнате")
     print(f"  {CMD_QUIT}            - выйти из игры")
     print(f"  {CMD_HELP}            - показать это сообщение")
+
+
+def pseudo_random(seed: int, modulo: int) -> int:
+    """Возвращает псевдослучайное целое число в диапазоне [0, modulo]"""
+
+    salted_seed_sin = math.sin(seed * SALT_NUMBER_1)
+    salted_seed_sin *= SALT_NUMBER_2
+
+    fract = salted_seed_sin - math.floor(salted_seed_sin)
+
+    return math.floor(fract * modulo)

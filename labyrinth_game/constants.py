@@ -122,3 +122,6 @@ CMD_INVENTORY = "inventory"
 CMD_SOLVE = "solve"
 CMD_QUIT = "quit"
 CMD_EXIT = "exit"
+
+SALT_NUMBER_1 = 12.9898
+SALT_NUMBER_2 = 43758.5453

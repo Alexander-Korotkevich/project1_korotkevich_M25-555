@@ -43,7 +43,7 @@ def process_command(game_state: GameStateType, command: str):
             else:
                 utils.solve_puzzle(game_state)
         case const.CMD_EXIT | const.CMD_QUIT:
-            game_state["game_over"] = True
+            utils.game_over(game_state)
             print("Игра окончена! До новых встреч")
         case _:
             print("Неизвестная команда.")

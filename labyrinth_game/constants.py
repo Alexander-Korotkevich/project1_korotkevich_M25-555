@@ -35,7 +35,7 @@ ROOMS: dict[str, RoomData] = {
     },
     HALL: {
         "description": (
-            "Большой зал с эхом." "По центру стоит пьедестал с запечатанным сундуком."
+            "Большой зал с эхом." " По центру стоит пьедестал с запечатанным сундуком."
         ),
         "exits": {"south": "entrance", "west": LIBRARY, "north": TREASURE_ROOM},
         "items": [],
@@ -162,3 +162,5 @@ COMMANDS = {
     f"{CMD_QUIT}": "выйти из игры",
     f"{CMD_HELP}": "показать это сообщение",
 }
+
+DIRECTIONS = ("north", "east", "south", "west")

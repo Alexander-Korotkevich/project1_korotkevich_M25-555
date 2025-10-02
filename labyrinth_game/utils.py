@@ -12,19 +12,19 @@ def game_over(game_state: GameStateType):
     game_state["game_over"] = True
 
 
-def get_room_data(game_state: GameStateType) -> list[Union[RoomData, str]]:
-    """Возвращает данные комнаты и ее название"""
+def get_current_room_data(game_state: GameStateType):
+    """Возвращает данные текущей комнаты и ее название"""
 
     current_room = game_state.get("current_room")
     room_data = const.ROOMS.get(current_room)
 
-    return [room_data, current_room]
+    return room_data, current_room
 
 
 def describe_current_room(game_state: GameStateType):
     """Описать текущую комнату"""
 
-    [room_data, current_room] = get_room_data(game_state)
+    room_data, current_room = get_current_room_data(game_state)
     room_items = room_data.get("items")
     room_exits = room_data.get("exits")
     separator = ", "
@@ -66,7 +66,7 @@ def get_reward(game_state: GameStateType, room: str):
 def solve_puzzle(game_state: GameStateType):
     """Попытаться решить загадку"""
 
-    [room_data, current_room] = get_room_data(game_state)
+    room_data, current_room = get_current_room_data(game_state)
     puzzle = room_data.get("puzzle")
 
     if not puzzle:
@@ -103,7 +103,7 @@ def win_game(game_state: GameStateType, room_data: RoomData):
 def attempt_open_treasure(game_state: GameStateType):
     """Попытаться открыть сундук с сокровищами"""
 
-    [room_data] = get_room_data(game_state)
+    room_data, _ = get_current_room_data(game_state)
     items = room_data.get("items")
 
     # Проверяем есть ли сундук в комнате
@@ -161,17 +161,17 @@ def trigger_trap(game_state: GameStateType):
 
     inventory = game_state.get("player_inventory")
     inventory_len = len(inventory)
+    steps = game_state.get("steps_taken")
 
     if inventory_len:
-        random_index = pseudo_random(game_state.get("steps_taken"), inventory_len)
+        random_index = pseudo_random(steps, inventory_len)
         item_to_remove = inventory[random_index]
 
         inventory.remove(item_to_remove)
         print(f"Ловушка сработала! Вы потеряли {item_to_remove}.")
     else:
-        start = 0
         end = 9
-        random_int = pseudo_random(start, end)
+        random_int = pseudo_random(steps, end)
 
         if random_int < const.DAMAGE_LIMIT:
             game_over(game_state)
@@ -188,7 +188,7 @@ def trigger_trap(game_state: GameStateType):
 def find_event(game_state: GameStateType):
     """Событие Находка"""
 
-    [room_data] = get_room_data(game_state)
+    room_data, _ = get_current_room_data(game_state)
     room_data["items"].append(const.ITEMS_COIN)
     print("Вы заметили монетку, сверкающую на полу.")
 
@@ -223,12 +223,12 @@ def trap_event(game_state: GameStateType):
 
 def random_event(game_state: GameStateType):
     """Запускает случайное событие"""
-
-    start = 0
+    steps = game_state.get('steps_taken')
     end = 10
-    random_int = pseudo_random(start, end)
+    random_int = pseudo_random(steps, end)
 
     if random_int == const.EVENT_HAPPENED:
+        start = 0
         event_code = pseudo_random(start, len(const.EVENTS))
         event = const.EVENTS.get(event_code)
         handler = event.get("handler")

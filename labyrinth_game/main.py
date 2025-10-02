@@ -31,8 +31,8 @@ def process_command(game_state: GameStateType, command: str):
                 utils.attempt_open_treasure(game_state)
             else:
                 actions.use_item(game_state, payload)
-        case const.CMD_GO:
-            actions.move_player(game_state, payload)
+        case _command if _command == const.CMD_GO or _command in const.DIRECTIONS:
+            actions.move_player(game_state, payload or _command)
         case const.CMD_TAKE:
             actions.take_item(game_state, payload)
         case const.CMD_INVENTORY:

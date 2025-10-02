@@ -20,7 +20,7 @@ def get_input(prompt="> "):
 
 
 def move_player(game_state: GameStateType, direction: str):
-    [room_data] = utils.get_room_data(game_state)
+    room_data, _ = utils.get_current_room_data(game_state)
     exit = room_data.get("exits").get(direction)
     if exit:
         can_go = utils.check_room(game_state, exit)
@@ -28,13 +28,13 @@ def move_player(game_state: GameStateType, direction: str):
             game_state["current_room"] = exit
             game_state["steps_taken"] += 1
             utils.describe_current_room(game_state)
-            utils.random_event()
+            utils.random_event(game_state)
     else:
         print("Нельзя пойти в этом направлении.")
 
 
 def take_item(game_state: GameStateType, item_name: str):
-    [room_data] = utils.get_room_data(game_state)
+    room_data, _ = utils.get_current_room_data(game_state)
     items = room_data.get("items")
 
     if item_name in items:

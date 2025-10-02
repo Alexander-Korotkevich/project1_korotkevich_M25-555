@@ -1,5 +1,5 @@
+import labyrinth_game.constants as const
 import labyrinth_game.utils as utils
-from labyrinth_game.constants import CMD_QUIT, RUSTY_KEY
 from labyrinth_game.types import GameStateType
 
 
@@ -16,7 +16,7 @@ def get_input(prompt="> "):
         return input(prompt)
     except (KeyboardInterrupt, EOFError):
         print("\nВыход из игры.")
-        return CMD_QUIT
+        return const.CMD_QUIT
 
 
 def move_player(game_state: GameStateType, direction: str):
@@ -48,22 +48,22 @@ def use_item(game_state: GameStateType, item_name: str):
 
     if item_name in items:
         match item_name:
-            case "torch":
+            case const.ITEMS_TORCH:
                 print(
                     (
                         "Пламя факела вспыхивает,"
                         " отбрасывая танцующие тени на стены лабиринта."
                     )
                 )
-            case "sword":
+            case const.ITEMS_SWORD:
                 print(
                     (
                         "Вес меча в руке придает вам уверенности."
                         " Теперь вы готовы к встрече с опасностью."
                     )
                 )
-            case "bronze_box":
-                if RUSTY_KEY in items:
+            case const.ITEMS_BRONZE_BOX:
+                if const.ITEMS_RUSTY_KEY in items:
                     print(
                         (
                             "Вы открываете шкатулку, но она пуста."
@@ -71,7 +71,7 @@ def use_item(game_state: GameStateType, item_name: str):
                         )
                     )
                 else:
-                    items.append(RUSTY_KEY)
+                    items.append(const.ITEMS_RUSTY_KEY)
                     print("Вы открываете бронзовую шкатулку. Внутри лежит ржавый ключ!")
                     print("Ржавый ключ добавлен в инвентарь.")
             case _:

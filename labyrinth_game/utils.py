@@ -13,12 +13,16 @@ from labyrinth_game.constants import (
     DAMAGE_LIMIT,
     EVENT_HAPPENED,
     EVENTS,
+    ITEMS_COIN,
+    ITEMS_SWORD,
+    ITEMS_TORCH,
     ROOMS,
-    RUSTY_KEY,
+    ITEMS_RUSTY_KEY,
     SALT_NUMBER_1,
     SALT_NUMBER_2,
+    TRAP_ROOM,
     TREASURE_CHEST,
-    TREASURE_KEY,
+    ITEMS_TREASURE_KEY,
 )
 from labyrinth_game.player_actions import get_input
 from labyrinth_game.types import GameStateType, RoomData
@@ -112,7 +116,8 @@ def attempt_open_treasure(game_state: GameStateType):
 
     # Если есть нужный ключ, открываем сундук и завершаем игру
     if any(
-        key in game_state.get("player_inventory") for key in [TREASURE_KEY, RUSTY_KEY]
+        key in game_state.get("player_inventory")
+        for key in [ITEMS_TREASURE_KEY, ITEMS_RUSTY_KEY]
     ):
         print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
         win_game(game_state, room_data)
@@ -194,7 +199,7 @@ def find_event(game_state: GameStateType):
     """Событие Находка"""
 
     [room_data] = get_room_data(game_state)
-    room_data["items"].append("coin")
+    room_data["items"].append(ITEMS_COIN)
     print("Вы заметили монетку, сверкающую на полу.")
 
 
@@ -205,7 +210,7 @@ def fear_event(game_state: GameStateType):
 
     print("Тишину нарушает едва слышный шорох. Кажется, вы не одни.")
 
-    if "sword" in items:
+    if ITEMS_SWORD in items:
         print(
             (
                 "Шорох обрывается на полуслове."
@@ -220,7 +225,7 @@ def trap_event(game_state: GameStateType):
     current_room = game_state.get("current_room")
     items = game_state.get("player_inventory")
 
-    if current_room == "trap_room" and "torch" not in items:
+    if current_room == TRAP_ROOM and ITEMS_TORCH not in items:
         print("Чувство опасности охватывает вас! Будьте готовы ко всему.")
 
         trigger_trap(game_state)

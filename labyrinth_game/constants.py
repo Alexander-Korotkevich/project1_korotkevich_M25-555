@@ -6,18 +6,25 @@ from labyrinth_game.utils import fear_event, find_event, trap_event
 # Комната с сундуком
 TREASURE_ROOM = "treasure_room"
 
+# Другие комнаты
+TRAP_ROOM = 'trap_room'
+
 # Сундук с сокровищами
 TREASURE_CHEST = "treasure_chest"
 
-# Ключи
-RUSTY_KEY = "rusty_key"
-TREASURE_KEY = "treasure_key"
+# Предметы
+ITEMS_TORCH = "torch"
+ITEMS_SWORD = "sword"
+ITEMS_BRONZE_BOX = "bronze_box"
+ITEMS_COIN = "coin"
+ITEMS_RUSTY_KEY = "rusty_key"
+ITEMS_TREASURE_KEY = "treasure_key"
 
 ROOMS: dict[str, RoomData] = {
     "entrance": {
         "description": "Вы в темном входе лабиринта...",
-        "exits": {"north": "hall", "east": "trap_room"},
-        "items": ["torch"],
+        "exits": {"north": "hall", "east": TRAP_ROOM},
+        "items": [ITEMS_TORCH],
         "puzzle": None,
     },
     "hall": {
@@ -34,13 +41,13 @@ ROOMS: dict[str, RoomData] = {
             "10",
         ),
     },
-    "trap_room": {
+    TRAP_ROOM: {
         "description": (
             "Комната с хитрой плиточной поломкой."
             ' На стене видна надпись: "Осторожно — ловушка".'
         ),
         "exits": {"west": "entrance"},
-        "items": ["rusty key"],
+        "items": [ITEMS_RUSTY_KEY],
         "puzzle": (
             (
                 "Система плит активна. "
@@ -69,7 +76,7 @@ ROOMS: dict[str, RoomData] = {
             "На стене висит меч, рядом — небольшая бронзовая шкатулка."
         ),
         "exits": {"south": "library"},
-        "items": ["sword", "bronze box"],
+        "items": [ITEMS_SWORD, ITEMS_BRONZE_BOX],
         "puzzle": None,
     },
     TREASURE_ROOM: {

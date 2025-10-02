@@ -1,10 +1,12 @@
-from typing import Dict, TypedDict, List, Union
+from typing import Dict, List, TypedDict, Union
+
 
 class GameStateType(TypedDict):
     player_inventory: List[str]
     current_room: str
     game_over: bool
     steps_taken: int
+
 
 class RoomData(TypedDict):
     description: str

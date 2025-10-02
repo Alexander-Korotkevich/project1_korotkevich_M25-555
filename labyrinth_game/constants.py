@@ -7,7 +7,9 @@ from labyrinth_game.utils import fear_event, find_event, trap_event
 TREASURE_ROOM = "treasure_room"
 
 # Другие комнаты
-TRAP_ROOM = 'trap_room'
+TRAP_ROOM = "trap_room"
+LIBRARY = "library"
+HALL = "hall"
 
 # Сундук с сокровищами
 TREASURE_CHEST = "treasure_chest"
@@ -22,20 +24,20 @@ ITEMS_TREASURE_KEY = "treasure_key"
 
 KEYS = [ITEMS_RUSTY_KEY, ITEMS_TREASURE_KEY]
 
-PUZZLE_ANSWER = ('10', 'десять')
+PUZZLE_ANSWER = ("10", "десять")
 
 ROOMS: dict[str, RoomData] = {
     "entrance": {
         "description": "Вы в темном входе лабиринта...",
-        "exits": {"north": "hall", "east": TRAP_ROOM},
+        "exits": {"north": HALL, "east": TRAP_ROOM},
         "items": [ITEMS_TORCH],
         "puzzle": None,
     },
-    "hall": {
+    HALL: {
         "description": (
             "Большой зал с эхом." "По центру стоит пьедестал с запечатанным сундуком."
         ),
-        "exits": {"south": "entrance", "west": "library", "north": "treasure_room"},
+        "exits": {"south": "entrance", "west": LIBRARY, "north": TREASURE_ROOM},
         "items": [],
         "puzzle": (
             (
@@ -61,12 +63,12 @@ ROOMS: dict[str, RoomData] = {
             "шаг шаг шаг",
         ),
     },
-    "library": {
+    LIBRARY: {
         "description": (
             "Пыльная библиотека. На полках старые свитки."
             " Где-то здесь может быть ключ от сокровищницы."
         ),
-        "exits": {"east": "hall", "north": "armory"},
+        "exits": {"east": HALL, "north": "armory"},
         "items": ["ancient book"],
         "puzzle": (
             "В одном свитке загадка: "
@@ -79,7 +81,7 @@ ROOMS: dict[str, RoomData] = {
             "Старая оружейная комната. "
             "На стене висит меч, рядом — небольшая бронзовая шкатулка."
         ),
-        "exits": {"south": "library"},
+        "exits": {"south": LIBRARY},
         "items": [ITEMS_SWORD, ITEMS_BRONZE_BOX],
         "puzzle": None,
     },
@@ -87,7 +89,7 @@ ROOMS: dict[str, RoomData] = {
         "description": (
             "Комната, на столе большой сундук." " Дверь заперта — нужен особый ключ."
         ),
-        "exits": {"south": "hall"},
+        "exits": {"south": HALL},
         "items": [TREASURE_CHEST],
         "puzzle": (
             (
@@ -102,7 +104,7 @@ ROOMS: dict[str, RoomData] = {
             "Тайный сад с волшебными растениями."
             " В центре растет сияющий цветок, а в фонтане что-то блестит."
         ),
-        "exits": {"east": "hall", "south": "secret_passage"},
+        "exits": {"east": HALL, "south": "secret_passage"},
         "items": ["magic flower", "fountain coin"],
         "puzzle": (
             (
@@ -117,7 +119,7 @@ ROOMS: dict[str, RoomData] = {
             "Узкий потайной проход."
             " Стены покрыты древними символами. Здесь темно и пыльно."
         ),
-        "exits": {"north": "garden", "east": "trap_room"},
+        "exits": {"north": "garden", "east": TRAP_ROOM},
         "items": ["old map"],
         "puzzle": (
             'На стене высечена головоломка: "Сколько углов у круга?" (ответ цифрой)',

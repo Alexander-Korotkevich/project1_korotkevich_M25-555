@@ -47,6 +47,22 @@ def describe_current_room(game_state: GameStateType):
         print("Кажется, здесь есть загадка (используйте команду solve).")
 
 
+def get_reward(game_state: GameStateType, room: str):
+    inventory = game_state.get("player_inventory")
+    reward_item = None
+
+    match (room):
+        case const.HALL:
+            reward_item = const.ITEMS_TREASURE_KEY
+        case const.LIBRARY:
+            reward_item = const.ITEMS_RUSTY_KEY
+        case _:
+            reward_item = const.ITEMS_COIN
+
+    inventory.append(reward_item)
+    print(f"В инвентарь добавлен предмет: {reward_item}")
+
+
 def solve_puzzle(game_state: GameStateType):
     """Попытаться решить загадку"""
 
@@ -68,9 +84,12 @@ def solve_puzzle(game_state: GameStateType):
     if input == answer or input in const.PUZZLE_ANSWER:
         print("Правильно! Даже древние хранители были бы впечатлены.")
         const.ROOMS[current_room]["puzzle"] = None
-        # TODO: добавить награду
+        get_reward(game_state, current_room)
     else:
         print("Неверно. Попробуйте снова.")
+
+        if current_room == const.TRAP_ROOM:
+            trigger_trap(game_state)
 
 
 def win_game(game_state: GameStateType, room_data: RoomData):
